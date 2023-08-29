@@ -1,0 +1,32 @@
+funcion intercambiar(arr, i, j) {
+    temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+funcion ordenar_burbuja(arr, n) {
+    para i desde 0 hasta n - 1 {
+        para j desde 0 hasta n - i - 1 {
+            si arr[j] > arr[j+1] {
+                intercambiar(arr, j, j+1);
+            }
+        }
+    }
+}
+
+arr = [64, 34, 25, 12, 22, 11, 90];
+n = longitud(arr);
+
+imprimir("Arreglo original:");
+para i desde 0 hasta n - 1 {
+    imprimir(arr[i], " ");
+}
+
+ordenar_burbuja(arr, n);
+
+imprimir("\nArreglo ordenado:");
+para i desde 0 hasta n - 1 {
+    imprimir(arr[i], " ");
+}
+
+retornar 0;

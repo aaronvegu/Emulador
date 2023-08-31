@@ -28,25 +28,47 @@ import java_cup.runtime.*;
 %}
 
 // Define token types
-%type TOKEN
-%type <TOK_IDENTIFICADOR> TOKEN_IDENTIFICADOR
-%type <TOK_ENTERO> TOKEN_ENTERO
-%type <TOK_REAL> TOKEN_REAL
-%type <TOK_CADENA> TOKEN_CADENA
-%type <TOK_CARACTER> TOKEN_CARACTER
-%type <TOK_BOOL> TOKEN_BOOL
-%type <TOK_SI> TOKEN_SI
-%type <TOK_SINO> TOKEN_SINO
-%type <TOK_MIENTRAS> TOKEN_MIENTRAS
-%type <TOK_PARA> TOKEN_PARA
-%type <TOK_HASTA> TOKEN_HASTA
-%type <TOK_FUNCION> TOKEN_FUNCION
-%type <TOK_RETORNO> TOKEN_RETORNO
-%type <TOK_VERDADERO> TOKEN_VERDADERO
-%type <TOK_FALSO> TOKEN_FALSO
-%type <TOK_IMPRIMIR> TOKEN_IMPRIMIR
-%type <TOK_LEER> TOKEN_LEER
-%type <TOK_DESDE> TOKEN_DESDE
+//%type TOKEN
+//%type <TOK_IDENTIFICADOR> TOKEN_IDENTIFICADOR
+//%type <TOK_ENTERO> TOKEN_ENTERO
+//%type <TOK_REAL> TOKEN_REAL
+//%type <TOK_CADENA> TOKEN_CADENA
+//%type <TOK_CARACTER> TOKEN_CARACTER
+//%type <TOK_BOOL> TOKEN_BOOL
+//%type <TOK_SI> TOKEN_SI
+//%type <TOK_SINO> TOKEN_SINO
+//%type <TOK_MIENTRAS> TOKEN_MIENTRAS
+//%type <TOK_PARA> TOKEN_PARA
+//%type <TOK_HASTA> TOKEN_HASTA
+//%type <TOK_FUNCION> TOKEN_FUNCION
+//%type <TOK_RETORNO> TOKEN_RETORNO
+//%type <TOK_VERDADERO> TOKEN_VERDADERO
+//%type <TOK_FALSO> TOKEN_FALSO
+//%type <TOK_IMPRIMIR> TOKEN_IMPRIMIR
+//%type <TOK_LEER> TOKEN_LEER
+//%type <TOK_DESDE> TOKEN_DESDE
+
+//// General Rules
+//LETRA = [a-zA-z]
+//DIGITO = [0-9]
+//PUNTUACION = [!\"#\$%&\'()\*\+\,\-\.\/:;<=>\?@\[\]\\\^_`{}\~�]
+//
+//// Regular Expressions
+//CARACTER = '{LETRA}' | '{PUNTUACION}' | '{DIGITO}'
+//ENTERO = 0|[1-9]{DIGITO}*
+//FLOTANTE = {ENTERO}(\.{DIGITO}*)?
+//RACIONAL = {ENTERO}"/"{DIGITO}{DIGITO}* | ({ENTERO}_){DIGITO}"/"{DIGITO}{DIGITO}*
+//NUMERO = {ENTERO} | {RACIONAL} | {FLOTANTE}
+////BOOLEANO = "Verdadero" | "Falso"
+////COMENTARIO = "#" [^\r\n]*
+////COMENTARIO_MULTIL = \"\"\"
+//ESPACIO = [ \t]+
+
+//CARACTER_IDENT = {LETRA} | {DIGITO} | "_"
+//IDENTIFICADOR = {LETRA}{CARACTER_IDENT}
+//
+//TERMINADOR_LINEA = \r|\n|\r\n
+//ESPACIO_VACIO = {TERMINADOR_LINEA} | [  \t\f]
 
 // States
 %state YYINITIAL, STRING, CHAR, COMENTARIO_LINEA, COMENTARIO_MULTILINEA
@@ -67,11 +89,18 @@ PARA = "para"
 HASTA = "hasta"
 FUNCION = "funcion"
 RETORNO = "retorno"
-VERDADERO = "verdadero"
-FALSO = "falso"
+VERDADERO = "Verdadero"
+FALSO = "Falso"
 IMPRIMIR = "imprimir"
 LEER = "leer"
 DESDE = "desde"
+NULO = "Nulo"
+COMO = "como"
+PAUSA = "pausa"
+CLASE = "clase"
+CONTINUA = "continua"
+DEFINE = "define"
+PASAR = "pasar"
 
 // Arithmetic operators
 SUMA = "\\+"
@@ -82,6 +111,10 @@ MODULO = "%"
 
 // Assignment operators
 ASIGNACION = "="
+MAS_IGUAL = "+="
+MENOS_IGUAL = "-="
+POR_IGUAL = "*="
+ENTRE_IGUAL = "/="
 
 // Comparison operators
 IGUAL = "=="
@@ -94,6 +127,7 @@ MENOR = "<"
 // Separators
 COMA = ","
 PUNTO_Y_COMA = ";"
+DOS_PUNTOS = ":"
 
 // Grouping signs
 PARENTESIS_IZQ = "\\("
@@ -102,6 +136,19 @@ CORCHETE_IZQ = "\\["
 CORCHETE_DER = "\\]"
 LLAVE_IZQ = "\\{"
 LLAVE_DER = "\\}"
+
+// Logic Operators
+OPERADOR_Y = "y"
+OPERADOR_O = "o"
+OPERADOR_NO = "no"
+
+// Pertenency Operators
+OPERADOR_EN = "en"
+OPERADOR_NOEN = "no en"
+
+// Identity Operators
+OPERADOR_ES = "es"
+OPERADOR_NOES = "no es"
 
 // Rules
 %%
@@ -127,6 +174,53 @@ LLAVE_DER = "\\}"
 <CHAR>'          { yybegin(YYINITIAL); return new Symbol(sym.TOKEN_CARACTER, yytext()); } // Exit character mode and return the character token
 <CHAR>.          { /* Continue scanning character content */ }
 
+{SUMA}            { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{RESTA}           { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{MULTIPLICACION}  { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{DIVISION}        { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{MODULO}          { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+
+{ASIGNACION}      { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{MAS_IGUAL}       { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{MENOS_IGUAL}     { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{POR_IGUAL}       { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{ENTRE_IGUAL}     { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+
+{IGUAL}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{DIFERENTE}       { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MAYOR_IGUAL}     { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MENOR_IGUAL}     { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MAYOR}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MENOR}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+
+{COMA}            { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
+{PUNTO_Y_COMA}    { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
+{DOS_PUNTOS}      { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
+
+{PARENTESIS_IZQ}  { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{PARENTESIS_DER}  { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{CORCHETE_IZQ}    { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{CORCHETE_DER}    { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{LLAVE_IZQ}       { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{LLAVE_DER}       { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+
+{PARENTESIS_IZQ}  { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{PARENTESIS_DER}  { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{CORCHETE_IZQ}    { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{CORCHETE_DER}    { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{LLAVE_IZQ}       { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{LLAVE_DER}       { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+
+{OPERADOR_Y}      { return new Symbol(sym.TOKEN_LOGICO, yytext()); }
+{OPERADOR_O}      { return new Symbol(sym.TOKEN_LOGICO, yytext()); }
+{OPERADOR_NO}     { return new Symbol(sym.TOKEN_LOGICO, yytext()); }
+
+{OPERADOR_EN}     { return new Symbol(sym.TOKEN_PERTENENCIA, yytext()); }
+{OPERADOR_NOEN}   { return new Symbol(sym.TOKEN_PERTENENCIA, yytext()); }
+
+{OPERADOR_ES}     { return new Symbol(sym.TOKEN_IDENTIDAD, yytext()); }
+{OPERADOR_NOES}   { return new Symbol(sym.TOKEN_IDENTIDAD, yytext()); }
+
 {NUMERO}          { return new Symbol(sym.TOKEN_ENTERO, yytext()); }
 {REAL}            { return new Symbol(sym.TOKEN_REAL, yytext()); }
 {IDENTIFICADOR}   { return new Symbol(sym.TOKEN_IDENTIFICADOR, yytext()); }
@@ -142,31 +236,15 @@ LLAVE_DER = "\\}"
 {IMPRIMIR}        { return new Symbol(sym.TOKEN_IMPRIMIR, yytext()); }
 {LEER}            { return new Symbol(sym.TOKEN_LEER, yytext()); }
 {DESDE}           { return new Symbol(sym.TOKEN_DESDE, yytext()); }
+{NULO}            { return new Symbol(sym.TOKEN_NULO, yytext()); }
+{COMO}            { return new Symbol(sym.TOKEN_COMO, yytext()); }
+{PAUSA}           { return new Symbol(sym.TOKEN_PAUSA, yytext()); }
+{CLASE}           { return new Symbol(sym.TOKEN_CLASE, yytext()); }
+{CONTINUA}        { return new Symbol(sym.TOKEN_CONTINUA, yytext()); }
+{DEFINE}          { return new Symbol(sym.TOKEN_DEFINE, yytext()); }
+{PASAR}           { return new Symbol(sym.TOKEN_PASAR, yytext()); }
 
-{SUMA}            { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{RESTA}           { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{MULTIPLICACION}  { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{DIVISION}        { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{MODULO}          { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+<YYINITIAL>"\n"   { /* Ignore newlines in the initial state */ }
+<YYINITIAL>.      { /* Ignore other characters */ }
 
-{ASIGNACION}      { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
-
-{IGUAL}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{DIFERENTE}       { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MAYOR_IGUAL}     { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MENOR_IGUAL}     { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MAYOR}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MENOR}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-
-{COMA}            { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
-{PUNTO_Y_COMA}    { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
-
-{PARENTESIS_IZQ}  { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{PARENTESIS_DER}  { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{CORCHETE_IZQ}    { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{CORCHETE_DER}    { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{LLAVE_IZQ}       { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{LLAVE_DER}       { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-
-<YYINITIAL>"\n"  { /* Ignore newlines in the initial state */ }
-<YYINITIAL>.     { /* Ignore other characters */ }
+[^]               { throw new Error("Illegal character <"+yytext()+">"); }

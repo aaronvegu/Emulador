@@ -161,88 +161,88 @@ OPERADOR_NOES = "no es"
 <YYINITIAL>\n      { /* Ignore newlines in the initial state */ }
 <YYINITIAL>.       { /* Ignore other characters */ }
 
-<COMENTARIO_MULTILINEA>"\"\"\""   { yybegin(YYINITIAL); /* Exit multiline comment mode */ }
+<COMENTARIO_MULTILINEA>"\"\"\""   { System.out.println("COMENTARIO MULTILINEA"); yybegin(YYINITIAL); /* Exit multiline comment mode */ }
 <COMENTARIO_MULTILINEA>.          { /* Continue scanning comment content */ }
 
-<COMENTARIO_LINEA>\n              { yybegin(YYINITIAL); /* Exit single-line comment mode */ }
+<COMENTARIO_LINEA>\n              { System.out.println("COMENTARIO"); yybegin(YYINITIAL); /* Exit single-line comment mode */ }
 <COMENTARIO_LINEA>[^\n]*          { /* Continue scanning single-line comment content */ }
 
-<STRING>\"       { yybegin(YYINITIAL); return new Symbol(sym.TOKEN_CADENA, yytext()); } // Exit string mode and return the string token
+<STRING>\"       { yybegin(YYINITIAL); System.out.println("CADENA"); return new Symbol(sym.TOKEN_CADENA, yytext()); } // Exit string mode and return the string token
 <STRING>\\n      { /* Ignore escaped newline in string */ }
 <STRING>.        { /* Continue scanning string content */ }
 
-<CHAR>'          { yybegin(YYINITIAL); return new Symbol(sym.TOKEN_CARACTER, yytext()); } // Exit character mode and return the character token
+<CHAR>'          { yybegin(YYINITIAL);System.out.println("CARACTER"); return new Symbol(sym.TOKEN_CARACTER, yytext()); } // Exit character mode and return the character token
 <CHAR>.          { /* Continue scanning character content */ }
 
-{SUMA}            { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{RESTA}           { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{MULTIPLICACION}  { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{DIVISION}        { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
-{MODULO}          { return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{IGUAL}           { System.out.println("IGUAL"); return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{DIFERENTE}       { System.out.println("DIFERENTE"); return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MAYOR_IGUAL}     { System.out.println("MAYOR_IGUAL"); return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MENOR_IGUAL}     { System.out.println("MENOR_IGUAL"); return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MAYOR}           { System.out.println("MAYOR"); return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{MENOR}           { System.out.println("MENOR"); return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
 
-{ASIGNACION}      { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
-{MAS_IGUAL}       { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
-{MENOS_IGUAL}     { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
-{POR_IGUAL}       { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
-{ENTRE_IGUAL}     { return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{MAS_IGUAL}       { System.out.println("MAS_IGUAL"); return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{MENOS_IGUAL}     { System.out.println("MENOS_IGUAL"); return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{POR_IGUAL}       { System.out.println("POR_IGUAL"); return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{ENTRE_IGUAL}     { System.out.println("ENTRE_IGUAL"); return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
+{ASIGNACION}      { System.out.println("ASIGNACION"); return new Symbol(sym.TOKEN_ASIGNACION, yytext()); }
 
-{IGUAL}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{DIFERENTE}       { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MAYOR_IGUAL}     { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MENOR_IGUAL}     { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MAYOR}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
-{MENOR}           { return new Symbol(sym.TOKEN_COMPARACION, yytext()); }
+{COMA}            { System.out.println("COMA"); return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
+{PUNTO_Y_COMA}    { System.out.println("PUNTO_Y_COMA"); return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
+{DOS_PUNTOS}      { System.out.println("DOS_PUNTOS"); return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
 
-{COMA}            { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
-{PUNTO_Y_COMA}    { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
-{DOS_PUNTOS}      { return new Symbol(sym.TOKEN_SEPARADOR, yytext()); }
+{PARENTESIS_IZQ}  { System.out.println("PARENTESIS_IZQ"); return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{PARENTESIS_DER}  { System.out.println("PARENTESIS_DER"); return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{CORCHETE_IZQ}    { System.out.println("CORCHETE_IZQ"); return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{CORCHETE_DER}    { System.out.println("CORCHETE_DER"); return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{LLAVE_IZQ}       { System.out.println("LLAVE_IZQ"); return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{LLAVE_DER}       { System.out.println("LLAVE_DER"); return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
 
-{PARENTESIS_IZQ}  { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
-{PARENTESIS_DER}  { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
-{CORCHETE_IZQ}    { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
-{CORCHETE_DER}    { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
-{LLAVE_IZQ}       { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
-{LLAVE_DER}       { return new Symbol(sym.TOKEN_AGRUPACION, yytext()); }
+{PARENTESIS_IZQ}  { System.out.println("PARENTESIS_IZQ"); return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{PARENTESIS_DER}  { System.out.println("PARENTESIS_DER"); return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{CORCHETE_IZQ}    { System.out.println("CORCHETE_IZQ"); return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{CORCHETE_DER}    { System.out.println("CORCHETE_DER"); return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{LLAVE_IZQ}       { System.out.println("LLAVE_IZQ"); return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{LLAVE_DER}       { System.out.println("LLAVE_DER"); return new Symbol(sym.TOKEN_GRUPO, yytext()); }
 
-{PARENTESIS_IZQ}  { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{PARENTESIS_DER}  { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{CORCHETE_IZQ}    { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{CORCHETE_DER}    { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{LLAVE_IZQ}       { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
-{LLAVE_DER}       { return new Symbol(sym.TOKEN_GRUPO, yytext()); }
+{OPERADOR_Y}      { System.out.println("OPERADOR_Y"); return new Symbol(sym.TOKEN_LOGICO, yytext()); }
+{OPERADOR_O}      { System.out.println("OPERADOR_O"); return new Symbol(sym.TOKEN_LOGICO, yytext()); }
+{OPERADOR_NO}     { System.out.println("OPERADOR_NO"); return new Symbol(sym.TOKEN_LOGICO, yytext()); }
 
-{OPERADOR_Y}      { return new Symbol(sym.TOKEN_LOGICO, yytext()); }
-{OPERADOR_O}      { return new Symbol(sym.TOKEN_LOGICO, yytext()); }
-{OPERADOR_NO}     { return new Symbol(sym.TOKEN_LOGICO, yytext()); }
+{OPERADOR_NOEN}   { System.out.println("OPERADOR_NOEN"); return new Symbol(sym.TOKEN_PERTENENCIA, yytext()); }
+{OPERADOR_EN}     { System.out.println("OPERADOR_EN"); return new Symbol(sym.TOKEN_PERTENENCIA, yytext()); }
 
-{OPERADOR_EN}     { return new Symbol(sym.TOKEN_PERTENENCIA, yytext()); }
-{OPERADOR_NOEN}   { return new Symbol(sym.TOKEN_PERTENENCIA, yytext()); }
+{OPERADOR_NOES}   { System.out.println("OPERADOR_NOES"); return new Symbol(sym.TOKEN_IDENTIDAD, yytext()); }
+{OPERADOR_ES}     { System.out.println("OPERADOR_ES"); return new Symbol(sym.TOKEN_IDENTIDAD, yytext()); }
 
-{OPERADOR_ES}     { return new Symbol(sym.TOKEN_IDENTIDAD, yytext()); }
-{OPERADOR_NOES}   { return new Symbol(sym.TOKEN_IDENTIDAD, yytext()); }
+{SUMA}            { System.out.println("SUMA"); return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{RESTA}           { System.out.println("RESTA"); return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{MULTIPLICACION}  { System.out.println("MULTIPLICACION"); return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{DIVISION}        { System.out.println("DIVISION"); return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
+{MODULO}          { System.out.println("MODULO"); return new Symbol(sym.TOKEN_ARITMETICO, yytext()); }
 
-{NUMERO}          { return new Symbol(sym.TOKEN_ENTERO, yytext()); }
-{REAL}            { return new Symbol(sym.TOKEN_REAL, yytext()); }
-{IDENTIFICADOR}   { return new Symbol(sym.TOKEN_IDENTIFICADOR, yytext()); }
-{SI}              { return new Symbol(sym.TOKEN_SI, yytext()); }
-{SINO}            { return new Symbol(sym.TOKEN_SINO, yytext()); }
-{MIENTRAS}        { return new Symbol(sym.TOKEN_MIENTRAS, yytext()); }
-{PARA}            { return new Symbol(sym.TOKEN_PARA, yytext()); }
-{HASTA}           { return new Symbol(sym.TOKEN_HASTA, yytext()); }
-{FUNCION}         { return new Symbol(sym.TOKEN_FUNCION, yytext()); }
-{RETORNO}         { return new Symbol(sym.TOKEN_RETORNO, yytext()); }
-{VERDADERO}       { return new Symbol(sym.TOKEN_VERDADERO, yytext()); }
-{FALSO}           { return new Symbol(sym.TOKEN_FALSO, yytext()); }
-{IMPRIMIR}        { return new Symbol(sym.TOKEN_IMPRIMIR, yytext()); }
-{LEER}            { return new Symbol(sym.TOKEN_LEER, yytext()); }
-{DESDE}           { return new Symbol(sym.TOKEN_DESDE, yytext()); }
-{NULO}            { return new Symbol(sym.TOKEN_NULO, yytext()); }
-{COMO}            { return new Symbol(sym.TOKEN_COMO, yytext()); }
-{PAUSA}           { return new Symbol(sym.TOKEN_PAUSA, yytext()); }
-{CLASE}           { return new Symbol(sym.TOKEN_CLASE, yytext()); }
-{CONTINUA}        { return new Symbol(sym.TOKEN_CONTINUA, yytext()); }
-{DEFINE}          { return new Symbol(sym.TOKEN_DEFINE, yytext()); }
-{PASAR}           { return new Symbol(sym.TOKEN_PASAR, yytext()); }
+{SINO}            { System.out.println("SINO"); return new Symbol(sym.TOKEN_SINO, yytext()); }
+{SI}              { System.out.println("SI"); return new Symbol(sym.TOKEN_SI, yytext()); }
+{MIENTRAS}        { System.out.println("MIENTRAS"); return new Symbol(sym.TOKEN_MIENTRAS, yytext()); }
+{PARA}            { System.out.println("PARA"); return new Symbol(sym.TOKEN_PARA, yytext()); }
+{HASTA}           { System.out.println("HASTA"); return new Symbol(sym.TOKEN_HASTA, yytext()); }
+{FUNCION}         { System.out.println("FUNCION"); return new Symbol(sym.TOKEN_FUNCION, yytext()); }
+{RETORNO}         { System.out.println("RETORNO"); return new Symbol(sym.TOKEN_RETORNO, yytext()); }
+{VERDADERO}       { System.out.println("VERDADERO"); return new Symbol(sym.TOKEN_VERDADERO, yytext()); }
+{FALSO}           { System.out.println("FALSO"); return new Symbol(sym.TOKEN_FALSO, yytext()); }
+{IMPRIMIR}        { System.out.println("IMPRIMIR"); return new Symbol(sym.TOKEN_IMPRIMIR, yytext()); }
+{LEER}            { System.out.println("LEER"); return new Symbol(sym.TOKEN_LEER, yytext()); }
+{DESDE}           { System.out.println("DESDE"); return new Symbol(sym.TOKEN_DESDE, yytext()); }
+{NULO}            { System.out.println("NULO"); return new Symbol(sym.TOKEN_NULO, yytext()); }
+{COMO}            { System.out.println("COMO"); return new Symbol(sym.TOKEN_COMO, yytext()); }
+{PAUSA}           { System.out.println("PAUSA"); return new Symbol(sym.TOKEN_PAUSA, yytext()); }
+{CLASE}           { System.out.println("CLASE"); return new Symbol(sym.TOKEN_CLASE, yytext()); }
+{CONTINUA}        { System.out.println("CONTINUA"); return new Symbol(sym.TOKEN_CONTINUA, yytext()); }
+{DEFINE}          { System.out.println("DEFINE"); return new Symbol(sym.TOKEN_DEFINE, yytext()); }
+{PASAR}           { System.out.println("PASAR"); return new Symbol(sym.TOKEN_PASAR, yytext()); }
+{NUMERO}          { System.out.println("NUMERO"); return new Symbol(sym.TOKEN_ENTERO, yytext()); }
+{REAL}            { System.out.println("REAL"); return new Symbol(sym.TOKEN_REAL, yytext()); }
+{IDENTIFICADOR}   { System.out.println("IDENTIFICADOR"); return new Symbol(sym.TOKEN_IDENTIFICADOR, yytext()); }
 
 <YYINITIAL>"\n"   { /* Ignore newlines in the initial state */ }
 <YYINITIAL>.      { /* Ignore other characters */ }

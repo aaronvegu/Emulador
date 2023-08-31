@@ -2,25 +2,22 @@ package Lexico;
 
 import java.io.File;
 import java.io.IOException;
-
 public class Generador {
-    public static void main(String[] args) throws IOException, Exception {
-        //String pathFlex="C:\\Users\\7053\\Documents\\NetBeansProjects\\UEDL_COMPILADORES\\src\\sintactico\\java_lexico_sintactico.jflex";
+    public static void main(String[] args) throws IOException {
+        // Specify the path to the JFlex file
+        String pathFlex = "src/Lexico/PyEsp.flex";
 
-        String pathFlex="src/Lexico/PyEsp.flex";
-        File file=new File(pathFlex);
-        jflex.Main.generate(file);
-        String[] parametrosLex = {pathFlex};
-        jflex.Main.generate(parametrosLex);
-        
-      
+        // Generate the Lexer using JFlex
+        jflex.Main.generate(new File(pathFlex));
 
-        //String[] parametros = {"-parser", "Sintactico", "C:\\Users\\7053\\Documents\\NetBeansProjects\\UEDL_COMPILADORES\\src\\sintactico\\sintactico.cup"};
-        //String[] parametros = {"-destdir", "src/Lexico","-parser", "ParserJava",
-            //"-progress", "src/lexico/tokens.cup"};
-        //java_cup.Main.main(parametros);
-        
+        // Specify the path to the CUP file
+        String pathCup = "src/Lexico/parser.cup";
+
+        // Generate the Parser using CUP
+        String[] parametrosCup = {"-parser", "Parser", "-destdir", "src/Lexico", pathCup};
+        java_cup.Main.main(parametrosCup);
+
+        System.out.println("Lexer and Parser generated successfully.");
     }
-    
-   
 }
+

@@ -14,7 +14,7 @@ import java_cup.runtime.XMLElement;
 public class parser extends java_cup.runtime.lr_parser {
 
  public final Class getSymbolContainer() {
-    return sym.class;
+    return lexico.sym.class;
 }
 
   /** Default constructor. */
@@ -39,7 +39,7 @@ public class parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\004\000\004\005\004\001\002\000\004\002\001\001" +
+    "\000\004\000\004\072\004\001\002\000\004\002\001\001" +
     "\002\000\004\002\006\001\002\000\004\002\000\001\002" +
     "" });
 
@@ -91,20 +91,20 @@ public class parser extends java_cup.runtime.lr_parser {
   /** User initialization code. */
   public void user_init() throws java.lang.Exception
     {
- s.init(); 
+ scanner.init();              
     }
 
   /** Scan to get the next Symbol. */
   public java_cup.runtime.Symbol scan()
     throws java.lang.Exception
     {
- return s.next_token(); 
+ return scanner.next_token(); 
     }
 
 
     // Connect this parser to a scanner!
     scanner s;
-    Parser(scanner s){ this.s=s; }
+    Parser(scanner s);{ this.s=s; }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/

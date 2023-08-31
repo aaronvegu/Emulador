@@ -1,0 +1,29 @@
+package lexico;
+import java_cup.runtime.*;
+
+parser code {:
+    // Connect this parser to a scanner!
+    scanner s;
+    Parser(scanner s);{ this.s=s; }
+:}
+
+/* Preliminaries to set up and use the scanner.  */
+init with {: scanner.init();              :};
+scan with {: return scanner.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal IGUAL, DIFERENTE, MAYOR_IGUAL, MENOR_IGUAL, MAYOR, MENOR;
+terminal MAS_IGUAL, MENOS_IGUAL, POR_IGUAL, ENTRE_IGUAL, ASIGNACION;
+terminal COMA, PUNTO_Y_COMA, DOS_PUNTOS, PARENTESIS_IZQUIERDO;
+terminal PARENTESIS_DER, CORCHETE_IZQ, CORCHETE_DER, LLAVE_IZQ, LLAVE_DER;
+terminal OPERADOR_Y, OPERADOR_O, OPERADOR_NO, OPERADOR_EN, OPERADOR_NOEN;
+terminal OPERADOR_NOES, OPERADOR_ES, SUMA, RESTA, MULTIPLICACION, DIVISION;
+terminal MODULO, SINO, SI, MIENTRAS, PARA, HASTA, FUNCION, RETORNO, VERDADERO;
+terminal FALSO, IMPRIMIR, LEER, DESDE, NULO, COMO, PAUSA, CLASE, CONTINUA;
+terminal DEFINE, PASAR, NUMERO, REAL, IDENTIFICADOR, ERROR;
+
+/* Non terminals */
+non terminal    expr;      // used to store evaluated subexpressions
+
+expr::= ERROR;
+
